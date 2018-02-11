@@ -6,7 +6,8 @@ var app     = express();
 
 app.get('/scrape', function(req, res){
 url ='https://restaurant.michelin.fr/restaurants/france/restaurants-1-etoile-michelin/restaurants-2-etoiles-michelin/restaurants-3-etoiles-michelin';
-  // The first parameter is our URL
+  var listRestau=[];
+	// The first parameter is our URL
     // The callback function takes 3 parameters, an error, response status code and the html
  request(url, function(error, response, html){
  	  // First we'll check to make sure no errors occurred when making the request
@@ -16,7 +17,7 @@ url ='https://restaurant.michelin.fr/restaurants/france/restaurants-1-etoile-mic
 
             var title;
             var json = { title : ""};
-             $('.header').filter(function(){
+             $('.poi_card-display-title').filter(function(){
 
            // Let's store the data we filter into a variable so we can easily see what's going on.
 
@@ -28,7 +29,8 @@ url ='https://restaurant.michelin.fr/restaurants/france/restaurants-1-etoile-mic
 
            // Once we have our title, we'll store it to the our json object.
 
-                json.nomdurestau = nomdurestau;
+                json.title = title;
+		     listRestau.push(json);
         }
         fs.writeFile('output.json', JSON.stringify(json, null, 4), function(err){
 
